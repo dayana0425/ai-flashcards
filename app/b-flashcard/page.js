@@ -1,9 +1,11 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
-import { useUser } from '@clerk/nextjs'; // For Clerk authentication
-import { useSearchParams } from 'next/navigation'; // For getting the search params
-import { collection, doc, getDocs } from 'firebase/firestore'; // Firebase Firestore functions
-import { Container, Grid, Card, CardActionArea, CardContent, Typography, Box } from '@mui/material'; // Material UI components
-import { db } from '../path/to/your/firebaseConfig'; // Import your Firebase config where you initialize Firestore
+import { useUser } from '@clerk/nextjs';
+import { useSearchParams } from 'next/navigation';
+import { collection, doc, getDocs } from 'firebase/firestore';
+import { Container, Stack, Card, CardActionArea, CardContent, Typography, Box } from '@mui/material'; 
+import { db } from '@/firebase';
 
 export default function Flashcard() {
   const { isLoaded, isSignedIn, user } = useUser();
@@ -37,9 +39,9 @@ export default function Flashcard() {
 
   return (
     <Container maxWidth="md">
-      <Grid container spacing={3} sx={{ mt: 4 }}>
+      <Stack direction="row" flexWrap="wrap" justifyContent="space-between" spacing={3} sx={{ mt: 4 }}>
         {flashcards.map((flashcard) => (
-          <Grid item xs={12} sm={6} md={4} key={flashcard.id}>
+          <Box key={flashcard.id} sx={{ width: { xs: '100%', sm: '48%', md: '30%' } }}>
             <Card>
               <CardActionArea onClick={() => handleCardClick(flashcard.id)}>
                 <CardContent>
@@ -66,9 +68,9 @@ export default function Flashcard() {
                 </CardContent>
               </CardActionArea>
             </Card>
-          </Grid>
+          </Box>
         ))}
-      </Grid>
+      </Stack>
     </Container>
   );
 }

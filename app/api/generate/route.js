@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
 
+// System prompt that instructs the model to create flashcards
 const systemPrompt = `
 You are a flashcard creator, you take in text and create multiple flashcards from it. Make sure to create exactly 10 flashcards.
 Both front and back should be one sentence long.
@@ -14,8 +15,17 @@ You should return in the following JSON format:
   ]
 }
 `;
+
 export async function POST(req) {
-  const openai = new OpenAI();
+  // Initialize the OpenAI API client
+  const apiKey = process.env.OPENAI_API_KEY;
+  const projectId = process.env.OPENAI_PROJECT_ID;
+
+  const openai = new OpenAI({
+    apiKey: apiKey,
+    projectId: projectId,
+  });
+
   const data = await req.text();
 
   const completion = await openai.chat.completions.create({
@@ -23,10 +33,12 @@ export async function POST(req) {
       { role: "system", content: systemPrompt },
       { role: "user", content: data },
     ],
-    model: "gpt-4o",
-    response_format: { type: "json_object" },
+    model: "gpt-4o", // Use the GPT-4 model
+    response_format: { type: "json_object" }, // Return JSON response
   });
 
+  // Parse the JSON response from the OpenAI API
   const flashcards = JSON.parse(completion.choices[0].message.content);
+  // Return the generated flashcards to the client
   return NextResponse.json(flashcards.flashcards);
 }

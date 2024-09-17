@@ -1,6 +1,8 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useSearchParams } from 'next/navigation'; // For Next.js search params
+import { useSearchParams } from 'next/navigation'; 
 import { Container, Typography, CircularProgress, Box } from '@mui/material';
 
 const ResultPage = () => {
@@ -13,7 +15,11 @@ const ResultPage = () => {
 
   useEffect(() => {
     const fetchCheckoutSession = async () => {
-      if (!session_id) return;
+      if (!session_id) {
+        setError("No session ID found.");
+        setLoading(false);
+        return;
+      }
       try {
         const res = await fetch(
           `/api/checkout_sessions?session_id=${session_id}`
@@ -22,7 +28,7 @@ const ResultPage = () => {
         if (res.ok) {
           setSession(sessionData);
         } else {
-          setError(sessionData.error);
+          setError(sessionData.error || "Failed to fetch session data.");
         }
       } catch (err) {
         setError("An error occurred while retrieving the session.");
@@ -54,6 +60,16 @@ const ResultPage = () => {
     );
   }
 
+  if (!session) {
+    return (
+      <Container maxWidth="sm" sx={{ textAlign: "center", mt: 4 }}>
+        <Typography variant="h6" color="error">
+          No session data available.
+        </Typography>
+      </Container>
+    );
+  }
+
   return (
     <Container maxWidth="sm" sx={{ textAlign: "center", mt: 4 }}>
       {session.payment_status === "paid" ? (
@@ -80,3 +96,5 @@ const ResultPage = () => {
     </Container>
   );
 };
+
+export default ResultPage;

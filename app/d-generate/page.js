@@ -1,12 +1,15 @@
 "use client";
 
-import { useState } from "react";
-import { Container, TextField, Button, Typography, Box } from "@mui/material";
+import React, { useState } from "react";
+import { Container, TextField, Button, Typography, Box, Card, CardContent, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Stack, } from "@mui/material";
+import { useUser } from "@clerk/nextjs";
+import { doc, collection, getDoc, writeBatch } from "firebase/firestore";
+import { db } from "@/firebase";
 
 export default function Generate() {
+  const { user } = useUser(); // Getting the user from Clerk
   const [text, setText] = useState("");
   const [flashcards, setFlashcards] = useState([]);
-
   const [setName, setSetName] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -74,12 +77,15 @@ export default function Generate() {
   const handleOpenDialog = () => setDialogOpen(true);
   const handleCloseDialog = () => setDialogOpen(false);
 
+  // Text input and button to generate flashcards
   return (
     <Container maxWidth="md">
       <Box sx={{ my: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
           Generate Flashcards
         </Typography>
+
+        // Text input and button to generate flashcards
         <TextField
           value={text}
           onChange={(e) => setText(e.target.value)}
@@ -99,15 +105,16 @@ export default function Generate() {
           Generate Flashcards
         </Button>
       </Box>
-      // Display the generated flashcards
+
+      {/* Display the generated flashcards */}
       {flashcards.length > 0 && (
         <Box sx={{ mt: 4 }}>
           <Typography variant="h5" component="h2" gutterBottom>
             Generated Flashcards
           </Typography>
-          <Grid container spacing={2}>
+          <Stack container spacing={2}>
             {flashcards.map((flashcard, index) => (
-              <Grid item xs={12} sm={6} md={4} key={index}>
+              <Stack item xs={12} sm={6} md={4} key={index}>
                 <Card>
                   <CardContent>
                     <Typography variant="h6">Front:</Typography>
@@ -118,12 +125,13 @@ export default function Generate() {
                     <Typography>{flashcard.back}</Typography>
                   </CardContent>
                 </Card>
-              </Grid>
+              </Stack>
             ))}
-          </Grid>
+          </Stack>
         </Box>
       )}
-      // Save flashcards to Firestore
+
+      {/* Save flashcards to Firestore */}
       {flashcards.length > 0 && (
         <Box sx={{ mt: 4, display: "flex", justifyContent: "center" }}>
           <Button
@@ -135,7 +143,8 @@ export default function Generate() {
           </Button>
         </Box>
       )}
-      // Dialog for saving flashcards
+
+      {/* Dialog for saving flashcards */}
       <Dialog open={dialogOpen} onClose={handleCloseDialog}>
         <DialogTitle>Save Flashcard Set</DialogTitle>
         <DialogContent>

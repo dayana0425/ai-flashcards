@@ -10,19 +10,19 @@ const formatAmountForStripe = (amount, currency) => {
 };
 
 export async function POST(req) {
+  // CREATE A CHECKOUT SESSION
   try {
-    // Necessary for the checkout session to redirect to the correct page
     const params = {
-      mode: "subscription",
-      payment_method_types: ["card"],
-      line_items: [
+      mode: "subscription", // recurring payment
+      payment_method_types: ["card"], // only card payments
+      line_items: [ // the product(s) being purchased (in this case, a subscription)
         {
           price_data: {
             currency: "usd",
             product_data: {
               name: "Pro subscription",
             },
-            unit_amount: formatAmountForStripe(10, 'usd'), // $10.00
+            unit_amount: formatAmountForStripe(1, "usd"), // $1.00
             recurring: {
               interval: "month",
               interval_count: 1,
@@ -46,31 +46,34 @@ export async function POST(req) {
     return NextResponse.json(checkoutSession, {
       status: 200,
     });
+
   } catch (error) {
     console.error("Error creating checkout session:", error);
     return new NextResponse(
       JSON.stringify({ error: { message: error.message } }),
-      {
-        status: 500,
-      }
+      { status: 500 }
     );
   }
 }
 
 export async function GET(req) {
-    const searchParams = req.nextUrl.searchParams
-    const session_id = searchParams.get('session_id')
-  
-    try {
-      if (!session_id) {
-        throw new Error('Session ID is required')
-      }
-  
-      const checkoutSession = await stripe.checkout.sessions.retrieve(session_id)
-  
-      return NextResponse.json(checkoutSession)
-    } catch (error) {
-      console.error('Error retrieving checkout session:', error)
-      return NextResponse.json({ error: { message: error.message } }, { status: 500 })
+  const searchParams = req.nextUrl.searchParams;
+  // Extract the session ID from the query string
+  const session_id = searchParams.get("session_id");
+
+  try {
+    if (!session_id) {
+      throw new Error("Session ID is required");
     }
+    // Retrieve the checkout session using Stripe's API
+    const checkoutSession = await stripe.checkout.sessions.retrieve(session_id);
+
+    return NextResponse.json(checkoutSession);
+  } catch (error) {
+    console.error("Error retrieving checkout session:", error);
+    return NextResponse.json(
+      { error: { message: error.message } },
+      { status: 500 }
+    );
   }
+}
