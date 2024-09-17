@@ -1,7 +1,21 @@
 "use client";
 
 import React, { useState } from "react";
-import { Container, TextField, Button, Typography, Box, Card, CardContent, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Stack, } from "@mui/material";
+import {
+  Container,
+  TextField,
+  Button,
+  Typography,
+  Box,
+  Card,
+  CardContent,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Stack,
+} from "@mui/material";
 import { useUser } from "@clerk/nextjs";
 import { doc, collection, getDoc, writeBatch } from "firebase/firestore";
 import { db } from "@/firebase";
@@ -84,7 +98,6 @@ export default function Generate() {
         <Typography variant="h4" component="h1" gutterBottom>
           Generate Flashcards
         </Typography>
-
         // Text input and button to generate flashcards
         <TextField
           value={text}

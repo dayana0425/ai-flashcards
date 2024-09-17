@@ -1,11 +1,19 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import { useUser } from '@clerk/nextjs';
-import { useSearchParams } from 'next/navigation';
-import { collection, doc, getDocs } from 'firebase/firestore';
-import { Container, Stack, Card, CardActionArea, CardContent, Typography, Box } from '@mui/material'; 
-import { db } from '@/firebase';
+import React, { useState, useEffect } from "react";
+import { useUser } from "@clerk/nextjs";
+import { useSearchParams } from "next/navigation";
+import { collection, doc, getDocs } from "firebase/firestore";
+import {
+  Container,
+  Stack,
+  Card,
+  CardActionArea,
+  CardContent,
+  Typography,
+  Box,
+} from "@mui/material";
+import { db } from "@/firebase";
 
 export default function Flashcard() {
   const { isLoaded, isSignedIn, user } = useUser();
@@ -39,9 +47,9 @@ export default function Flashcard() {
 
   return (
     <Container maxWidth="md">
-      <Stack direction="row" flexWrap="wrap" justifyContent="space-between" spacing={3} sx={{ mt: 4 }}>
+      <Grid container spacing={3} sx={{ mt: 4 }}>
         {flashcards.map((flashcard) => (
-          <Box key={flashcard.id} sx={{ width: { xs: '100%', sm: '48%', md: '30%' } }}>
+          <Grid item xs={12} sm={6} md={4} key={flashcard.id}>
             <Card>
               <CardActionArea onClick={() => handleCardClick(flashcard.id)}>
                 <CardContent>
@@ -68,9 +76,9 @@ export default function Flashcard() {
                 </CardContent>
               </CardActionArea>
             </Card>
-          </Box>
+          </Grid>
         ))}
-      </Stack>
+      </Grid>
     </Container>
   );
 }

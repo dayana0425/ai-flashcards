@@ -9,10 +9,9 @@ import { db } from '@/firebase';
 
 export default function Flashcard() {
   // Show Flashcards record for the user
-  const { isLoaded, isSignedIn, user } = useUser();
-  const [flashcards, setFlashcards] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const router = useRouter();
+  const { isLoaded, isSignedIn, user } = useUser()
+  const [flashcards, setFlashcards] = useState([])
+  const router = useRouter()
 
   const handleCardClick = (id) => {
     router.push(`/flashcard?id=${id}`);
@@ -20,27 +19,18 @@ export default function Flashcard() {
 
   useEffect(() => {
     async function getFlashcards() {
-      if (!user) {
-        setLoading(false);
-        return;
-      }
-      try {
-        const docRef = doc(collection(db, 'users'), user.id);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          const collections = docSnap.data().flashcards || [];
-          setFlashcards(collections);
-        } else {
-          await setDoc(docRef, { flashcards: [] });
-        }
-      } catch (error) {
-        console.error("Error fetching flashcards:", error);
-      } finally {
-        setLoading(false);
+      if (!user) return
+      const docRef = doc(collection(db, 'users'), user.id)
+      const docSnap = await getDoc(docRef)
+      if (docSnap.exists()) {
+        const collections = docSnap.data().flashcards || []
+        setFlashcards(collections)
+      } else {
+        await setDoc(docRef, { flashcards: [] })
       }
     }
-    if (isLoaded) getFlashcards();
-  }, [isLoaded, user]);
+    getFlashcards()
+  }, [user])
 
   if (loading) {
     return (
@@ -60,9 +50,9 @@ export default function Flashcard() {
 
   return (
     <Container maxWidth="md">
-      <Stack direction="row" flexWrap="wrap" justifyContent="space-between" spacing={3} sx={{ mt: 4 }}>
+      <Grid container spacing={3} sx={{ mt: 4 }}>
         {flashcards.map((flashcard, index) => (
-          <Box key={index} sx={{ width: { xs: '100%', sm: '48%', md: '30%' } }}>
+          <Grid item xs={12} sm={6} md={4} key={index}>
             <Card>
               <CardActionArea onClick={() => handleCardClick(flashcard.name)}>
                 <CardContent>
@@ -72,9 +62,9 @@ export default function Flashcard() {
                 </CardContent>
               </CardActionArea>
             </Card>
-          </Box>
+          </Grid>
         ))}
-      </Stack>
+      </Grid>
     </Container>
-  );
+  )
 }
