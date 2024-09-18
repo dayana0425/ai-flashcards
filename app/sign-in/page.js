@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Container, Box, Typography, AppBar, Toolbar, Button } from '@mui/material';
-import { SignUp } from '@clerk/nextjs';  // Use SignUp instead of SignIn
+import { SignIn } from '@clerk/nextjs';
 import Link from 'next/link';
 
 export default function SignUpPage() {
@@ -14,8 +14,8 @@ export default function SignUpPage() {
             <Typography variant="h6" sx={{ flexGrow: 1 }}>
               Flashcard SaaS
             </Typography>
-            <Button color="inherit" component={Link} href="/sign-in">
-              Login
+            <Button color="inherit" component={Link} href="/sign-up">
+              Sign Up
             </Button>
           </Toolbar>
         </AppBar>
@@ -29,9 +29,9 @@ export default function SignUpPage() {
           sx={{ textAlign: 'center', my: 4 }}
         >
           <Typography variant="h4" component="h1" gutterBottom>
-            Sign Up
+            Sign In
           </Typography>
-          <SignUp />  {/* Render the SignUp component */}
+          <SignIn />
         </Box>
       </>
     </Container>
