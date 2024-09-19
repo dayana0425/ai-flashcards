@@ -4,6 +4,7 @@ import { AppBar, Toolbar, Typography, Button, Box, Stack } from "@mui/material";
 import { SignedOut, SignedIn, UserButton } from "@clerk/nextjs";
 import getStripe from "../utils/get-stripe";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Image from "next/image";
 
 // Color Variables
 const primaryColor = "#4A90E2";
@@ -189,14 +190,22 @@ export default function Home() {
                 width: { xs: "100%", md: "300px" },
               }}
             >
+              <Image
+                src="/assets/1.png"
+                alt="Paste in Text"
+                width={300}
+                height={300}
+                style={{ borderRadius: "8px" }}
+              />
               <Typography
                 variant="h5"
                 sx={{ color: theme.palette.primary.main }}
               >
-                AI-Powered
+                Paste Your Notes
               </Typography>
               <Typography variant="body1" color="text.primary">
-                Create flashcards instantly using AI.
+                Turn your class notes into ready-to-use flashcards with just a
+                click!
               </Typography>
             </Box>
             <Box
@@ -209,14 +218,21 @@ export default function Home() {
                 width: { xs: "100%", md: "300px" },
               }}
             >
+              <Image
+                src="/assets/2.png"
+                alt="Paste in Text"
+                width={300}
+                height={300}
+                style={{ borderRadius: "8px" }}
+              />
               <Typography
                 variant="h5"
                 sx={{ color: theme.palette.primary.main }}
               >
-                Customizable
+                Mnemonic Cues
               </Typography>
               <Typography variant="body1" color="text.primary">
-                Organize flashcards by subject or topic.
+                Enhance memory retention with personalized mnemonic suggestions.
               </Typography>
             </Box>
             <Box
@@ -229,14 +245,22 @@ export default function Home() {
                 width: { xs: "100%", md: "300px" },
               }}
             >
+              <Image
+                src="/assets/3.png"
+                alt="Paste in Text"
+                width={300}
+                height={300}
+                style={{ borderRadius: "8px" }}
+              />
               <Typography
                 variant="h5"
                 sx={{ color: theme.palette.primary.main }}
               >
-                Affordable
+                Create Sets of 10
               </Typography>
               <Typography variant="body1" color="text.primary">
-                Just $1 for unlimited flashcards.
+                Organize your study materials into manageable sets of 10
+                flashcards.
               </Typography>
             </Box>
           </Stack>
