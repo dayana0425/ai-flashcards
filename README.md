@@ -1,4 +1,4 @@
-FlashGen: A multi-tenant SaaS AI Flashcard App
+FlashGen: A multi-tenant SaaS AI Generated Flashcard Application
 
 ----
 
